@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PointOfSales;
+using PointOfSales.Repository.Categories;
+using PointOfSales.Repository.Products;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ builder.Services.AddDbContext<PosDbContext>(options =>
 {
     options.UseMySql(builder.Configuration.GetConnectionString("Default"), new MySqlServerVersion(new Version(11, 0, 2)));
 });
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
 builder.Services.AddControllersWithViews();
 
 

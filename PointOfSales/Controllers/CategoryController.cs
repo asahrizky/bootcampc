@@ -1,17 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PointOfSales.Models;
+using PointOfSales.Repository.Categories;
+
 namespace PointOfSales.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly PosDbContext _context;
+        private readonly ICategoryRepository _categoryRepository;
         
-        public CategoryController(PosDbContext context) {
-            _context = context; 
+        public CategoryController(ICategoryRepository categoryRepository) {
+            _categoryRepository = categoryRepository; 
         }
         public IActionResult Index()
         {
-            var listCategory = _context.Category.ToList();
+            var listCategory = _categoryRepository.GetCategories();
             return View(listCategory);
         }
         public IActionResult Create()
@@ -24,33 +26,30 @@ namespace PointOfSales.Controllers
             item.CreatedDate = DateTime.Now;
             item.UpdatedDate = DateTime.Now;
 
-            _context.Add(item);
-            _context.SaveChanges();
+            _categoryRepository.AddCategory(item);
 
             return RedirectToAction("Index");
 
         }
         public IActionResult Edit(int id)
         {
-            var category = _context.Category.Find(id);
+            var category = _categoryRepository.GetCategoryById(id);
             return View(category);
         }
         [HttpPost]
         public IActionResult Edit(Category item)
         {
-            var category = _context.Category.Find(item.Id);
+            var category = _categoryRepository.GetCategoryById(item.Id);
             category.Name = item.Name;
             category.UpdatedDate = DateTime.Now;
-            _context.Update(category);
-            _context.SaveChanges();
+            _categoryRepository.UpdateCategory(category);
             return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int id)
         {
-            var category =_context.Category.Find(id);
-            _context.Remove(category);
-            _context.SaveChanges();
+            var category =_categoryRepository.GetCategoryById(id);
+            _categoryRepository.DeleteCategory(id);
             return RedirectToAction("Index");
         }
     }

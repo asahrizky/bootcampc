@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PointOfSales.Models;
-
+using PointOfSales.Repository.Products;
 namespace PointOfSales.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly PosDbContext _context;
+        private readonly IProductsRepository _productRepository;
         private readonly IWebHostEnvironment _webHostEnvironment; // untuk image
-        public ProductController(PosDbContext context, IWebHostEnvironment webHostEnvironment)
+        public ProductController(IProductsRepository productsRepository, IWebHostEnvironment webHostEnvironment)
         {
-            _context = context; //set context
+            _productRepository = productsRepository; //set context
             _webHostEnvironment = webHostEnvironment; //set Environtment Default Path wwwRoot
         }
         public IActionResult Index()
         {
-            var listProduct = _context.Product.ToList();
+            var listProduct = _productRepository.GetProducts();
             return View(listProduct);
         }
         
@@ -39,20 +39,20 @@ namespace PointOfSales.Controllers
             }
             item.CreatedDate = DateTime.Now;
 
-            _context.Add(item);
-            _context.SaveChanges();
+            _productRepository.AddProduct(item);
+            
 
             return RedirectToAction("Index");
         }
         public IActionResult Edit(int id)
         {
-            var product = _context.Product.Find(id);
+            var product = _productRepository.getProductById(id);
             return View(product);
         }
         [HttpPost]
         public IActionResult Edit(Product item)
         {
-            var product = _context.Product.Find(item.Id);
+            var product = _productRepository.getProductById(item.Id);
             if (item.ImageFile != null)
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
@@ -71,16 +71,16 @@ namespace PointOfSales.Controllers
             product.Description = item.Description;
             product.Price = item.Price;
             product.UpdatedDate = DateTime.Now;
-            _context.Update(product);
-            _context.SaveChanges();
+            _productRepository.UpdateProduct(product);
+            
             return RedirectToAction("Index");
 
         }
         public IActionResult Delete(int id)
         {
-            var product = _context.Product.Find(id);
-            _context.Remove(product);
-            _context.SaveChanges();
+            var product = _productRepository.getProductById(id);
+            _productRepository.DeleteProduct(id);
+            
 
             return RedirectToAction("Index");
         }
