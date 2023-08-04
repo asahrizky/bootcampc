@@ -1,0 +1,23 @@
+﻿@model PointOfSales.Models.Product
+<form action="/Product/Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="Id" value="@Model.Id"/>
+    <table>
+        <tr>
+            <td>Name Product</td>
+            <td><input type="text" name="Name" value="@Model.Name" /></td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><input type="text" name="Description" value="@Model.Description" /></td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td><input type="text" name="Price" value="@Model.Price" /></td>
+        </tr>
+        <tr>
+            <td>Image</td>
+            <td><input type="file" name="ImageFile" accept="image/*" /></td>
+        </tr>
+    </table>
+    <input type="submit" value="edit" />
+</form>

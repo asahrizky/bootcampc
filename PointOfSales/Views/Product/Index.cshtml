@@ -1,0 +1,41 @@
+﻿@model List<PointOfSales.Models.Product>
+
+<h2>Product</h2>
+
+<p>
+    <a href="/Product/Create">Add Product</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Nama</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Image</th>
+            <th>CreateDate</th>
+            <th>UpdateDate</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.Price</td>
+                <td><img style="width: 6rem" src="/Image/@item.Image"></td>
+                <td>@item.CreatedDate</td>
+                <td>@item.UpdatedDate</td>
+                <td>
+                    <a href="/Product/Edit/@item.Id">Edit</a>
+                    <a href="/Product/Delete/@item.Id">Delete</a>
+                </td>
+                
+            </tr>
+            
+        }
+    </tbody>
+</table>

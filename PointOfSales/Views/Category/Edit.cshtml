@@ -1,0 +1,12 @@
+﻿@model PointOfSales.Models.Category
+<form action="/Category/Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <table>
+        <tr>
+            <td>Name Category</td>
+            <td><input type="text" name="Name" value="@Model.Name" /></td>
+        </tr>
+        
+    </table>
+    <input type="submit" value="edit" />
+</form>
